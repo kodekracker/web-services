@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#xt3#jbmf(h2m62yw-3q(76-h==vd_9!ow9@batu#8cvqp6$5d'
+SECRET_KEY = os.getenv('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,15 +78,9 @@ WSGI_APPLICATION = 'webservices.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'webservices_db',
-        'USER': 'django_user',
-        'PASSWORD': 'p1',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    },
+# Parse database configuration from $DATABASE_URL
+DATABASES =  {
+    'default': dj_database_url.config()
 }
 
 
@@ -106,7 +101,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+# Static asset configuration
+# STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
@@ -134,7 +135,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST = 'smtp.mailgun.org'
 
-EMAIL_HOST_USER = 'adjango@akshayon.net'
+EMAIL_HOST_USER = 'django@akshayon.net'
 
 EMAIL_HOST_PASSWORD = os.getenv('MAILGUN_SMTP_PASSWORD', None)
 
@@ -145,3 +146,4 @@ EMAIL_SUBJECT = 'Contact Us - User Message from akshayon.net'
 EMAIL_TO = 'admin@akshayon.net'
 
 APPEND_SLASH=True
+
