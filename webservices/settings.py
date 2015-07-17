@@ -40,11 +40,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     'app',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -97,6 +99,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+USE_ETAGS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
@@ -148,3 +151,5 @@ EMAIL_TO = 'admin@akshayon.net'
 
 APPEND_SLASH=True
 
+# django-cors configuration
+CORS_ORIGIN_ALLOW_ALL = True
