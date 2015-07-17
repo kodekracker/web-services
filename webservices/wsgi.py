@@ -14,5 +14,5 @@ from dj_static import Cling
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webservices.settings-prod")
 
-# application = Cling(get_wsgi_application())
-application = get_wsgi_application()
+application = Cling(get_wsgi_application())
+# application = get_wsgi_application()
