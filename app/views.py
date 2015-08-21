@@ -41,7 +41,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class MailViewSet(viewsets.ModelViewSet):
     """
-    To get all sent mails and send mail to admin mail-id
+    List of all sent mails to admin email
     """
     queryset = Mail.objects.all()
     serializer_class = MailSerializer

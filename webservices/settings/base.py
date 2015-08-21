@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/1.8/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
+# -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -23,15 +25,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', None)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +39,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'corsheaders',
     'app',
-)
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -81,9 +78,21 @@ WSGI_APPLICATION = 'webservices.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 # Parse database configuration from $DATABASE_URL
-DATABASES =  {
-    'default': dj_database_url.config()
-}
+if not os.environ.get('DATABASE_URL', None):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    # https://github.com/kennethreitz/dj-database-url
+    import dj_database_url
+    DATABASES = {'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL')
+        )
+    }
+
 
 
 # Internationalization
