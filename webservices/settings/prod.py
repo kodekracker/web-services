@@ -1,5 +1,13 @@
-## settings.py of Django Project for production
-from settings import *
+"""
+Production-ready settings. All sensitive information is sources
+from environment variables.
+Checklist for production-ready settings:
+https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
+"""
+# -*- coding: utf-8 -*-
+from __future__ import print_function, unicode_literals
+
+from .base import *
 
 DEBUG = False
 
