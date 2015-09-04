@@ -1,8 +1,10 @@
 from django.shortcuts import render
 
 # Create your views here.
+import twitter
 import smtplib
 import datetime
+from django.conf import settings
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -20,28 +22,18 @@ from rest_framework.exceptions import APIException
 from app.models import Mail
 from app.serializers import MailSerializer, UserSerializer
 from app.utils import MailServiceUnavailable
-from webservices.settings import EMAIL_TO, EMAIL_SUBJECT
 
 @api_view(('GET',))
 @permission_classes((permissions.AllowAny,))
 def api_root(request, format=None):
     return Response({
-        'users': reverse('user-list', request=request, format=format),
-        'mails': reverse('mail-list', request=request, format=format)
+        'mails': reverse('mail-list', request=request, format=format),
+        'tweets': reverse('tweet-list', request=request, format=format)
     })
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    List of all api users
-    """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    authentication_classes = (authentication.TokenAuthentication,)
-    permissions_classes = (permissions.IsAdminUser,)
 
 class MailViewSet(viewsets.ModelViewSet):
     """
-    List of all sent mails to admin email
+    To send mail to admin through mailgun SMTP server
     """
     queryset = Mail.objects.all()
     serializer_class = MailSerializer
@@ -63,10 +55,37 @@ class MailViewSet(viewsets.ModelViewSet):
         """
         # send mail to mailgun server
         try:
-            send_mail(EMAIL_SUBJECT, self.request.data['message'], self.request.data['email_from'], [EMAIL_TO])
+            send_mail(setttings.EMAIL_SUBJECT, self.request.data['message'],
+                self.request.data['email_from'], [settings.EMAIL_TO])
         except smtplib.SMTPException:
             raise MailServiceUnavailable
-        serializer.save(owner=self.request.user, email_to=EMAIL_TO, host_ip=self.request.META['REMOTE_ADDR'])
+        serializer.save(owner=self.request.user, email_to=settings.EMAIL_TO,
+            host_ip=self.request.META['REMOTE_ADDR'])
+
+@api_view(('GET',))
+@permission_classes((permissions.AllowAny,))
+def get_tweets(request, format=None):
+    """
+    To get the lastest tweets from admin profile
+    """
+    count = None
+    if 'count' in request.query_params:
+        count=request.query_params['count']
+    api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+        consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+        access_token_key=settings.TWITTER_ACCESS_TOKEN_KEY,
+        access_token_secret=settings.TWITTER_ACCESS_TOKEN_SECRET
+    )
+    tweets = api.GetUserTimeline(screen_name=settings.TWITTER_SCREEN_NAME,
+        count=count)
+    data = []
+    for tweet in tweets:
+        data.append({
+            "id": tweet.id,
+            "created_at": tweet.created_at,
+            "text": tweet.text
+            })
+    return Response(data)
 
 def error404(request):
     """
