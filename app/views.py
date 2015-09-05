@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 import twitter
+import feedparser
 import smtplib
 import datetime
 import traceback
@@ -29,8 +30,9 @@ def api_root(request, format=None):
     """
     return Response({
         'mails': reverse('send-mail', request=request, format=format),
-        'tweets': reverse('tweet-list', request=request, format=format)
-    })
+        'tweets': reverse('tweet-list', request=request, format=format),
+        'blogs': reverse('blog-list', request=request, format=format)
+    }, status=status.HTTP_200_OK)
 
 @api_view(['POST',])
 @authentication_classes((authentication.TokenAuthentication,))
@@ -91,7 +93,35 @@ def get_tweets(request, format=None):
             "created_at": tweet.created_at,
             "text": tweet.text
             })
-    return Response(data)
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['GET',])
+@permission_classes((permissions.AllowAny,))
+def get_blogs(request, format=None):
+    """
+    To get blog list from rss feed
+    """
+    # get raw parsed data of RSS feed
+    raw_data = feedparser.parse(settings.RSS_FEED_URL)
+    feed = raw_data['feed']
+
+    # append each blog entry to result data
+    data = {
+        "title": feed['title'],
+        "link": feed['link'],
+        "updated": feed['updated'],
+        "entries": []
+    }
+    for entry in raw_data['entries']:
+        data['entries'].append({
+                "title": entry['title'],
+                "author": entry['author'],
+                "link": entry['link'],
+                "summary": entry['summary'],
+                "updated": entry['updated']
+            })
+
+    return Response(data, status=status.HTTP_200_OK)
 
 def error404(request):
     """
