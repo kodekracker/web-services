@@ -24,7 +24,3 @@ def custom_exception_handler(exc, context):
         return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return response
-
-class MailServiceUnavailable(APIException):
-    status_code = 503
-    default_detail = 'Mail Service temporarily unavailable, try again later.'
