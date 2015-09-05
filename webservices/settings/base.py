@@ -16,7 +16,7 @@ from __future__ import print_function, unicode_literals
 import os
 import dj_database_url
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -171,3 +171,6 @@ TWITTER_CONSUMER_KEY = os.getenv('TWITTER_CONSUMER_KEY', None)
 TWITTER_CONSUMER_SECRET = os.getenv('TWITTER_CONSUMER_SECRET', None)
 TWITTER_ACCESS_TOKEN_KEY = os.getenv('TWITTER_ACCESS_TOKEN_KEY', None)
 TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET', None)
+
+# RSS FEED URL
+RSS_FEED_URL="http://blog.akshayon.net/feeds/all.atom.xml"
