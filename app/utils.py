@@ -2,6 +2,7 @@ from rest_framework.views import exception_handler
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import APIException
+from bs4 import BeautifulSoup
 
 def custom_exception_handler(exc, context):
     """
@@ -24,3 +25,10 @@ def custom_exception_handler(exc, context):
         return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return response
+
+def get_summary(html):
+    """
+    Convert html to plain text and trimmed content length
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    return soup.get_text()
