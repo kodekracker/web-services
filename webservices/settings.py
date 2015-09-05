@@ -12,11 +12,17 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # -*- coding: utf-8 -*-
 from __future__ import print_function, unicode_literals
 
+# import local settings, if any
+try:
+    from local_settings import *
+except ImportError as e:
+    pass
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import dj_database_url
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,6 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', None)
 
+DEBUG = False
 
 # Application definition
 
@@ -38,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_extensions',
     'app',
 ]
 
@@ -92,8 +100,6 @@ else:
             default=os.environ.get('DATABASE_URL')
         )
     }
-
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -174,3 +180,6 @@ TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET', None)
 
 # RSS FEED URL
 RSS_FEED_URL="http://blog.akshayon.net/feeds/all.atom.xml"
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
