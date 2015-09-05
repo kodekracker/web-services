@@ -21,6 +21,7 @@ from rest_framework.exceptions import APIException
 
 from app.models import Mail
 from app.serializers import MailSerializer, UserSerializer
+from app.utils import get_summary, get_readable_date
 
 @api_view(['GET',])
 @permission_classes((permissions.AllowAny,))
@@ -106,19 +107,17 @@ def get_blogs(request, format=None):
     feed = raw_data['feed']
 
     # append each blog entry to result data
-    data = {
-        "title": feed['title'],
-        "link": feed['link'],
-        "updated": feed['updated'],
-        "entries": []
-    }
+    data = []
     for entry in raw_data['entries']:
-        data['entries'].append({
+        data.append({
                 "title": entry['title'],
                 "author": entry['author'],
                 "link": entry['link'],
-                "summary": entry['summary'],
-                "updated": entry['updated']
+                "summary": {
+                    "plaintext": get_summary(entry['summary']),
+                    "html": entry['summary'],
+                },
+                "updated_date": get_readable_date(entry['updated'])
             })
 
     return Response(data, status=status.HTTP_200_OK)
