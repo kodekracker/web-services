@@ -9,3 +9,5 @@ staticfiles
 
 # local development settings file
 local_settings.py
+
+.idea
