@@ -11,3 +11,5 @@ staticfiles
 local_settings.py
 
 .idea
+
+*.sqlite3

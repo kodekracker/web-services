@@ -1,9 +1,9 @@
 from rest_framework.views import exception_handler
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import APIException
 from bs4 import BeautifulSoup
 from datetime import datetime
+
 
 def custom_exception_handler(exc, context):
     """
@@ -27,12 +27,14 @@ def custom_exception_handler(exc, context):
 
     return response
 
+
 def get_summary(html):
     """
     Convert html to plain text and trimmed content length
     """
     soup = BeautifulSoup(html, "html.parser")
     return soup.get_text()
+
 
 def get_readable_date(datetime_str):
     """

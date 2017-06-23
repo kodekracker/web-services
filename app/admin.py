@@ -1,6 +1,7 @@
 from django.contrib import admin
 from app import models
 
+
 # Register your models here.
 class MailAdmin(admin.ModelAdmin):
     exclude = ('created', )
