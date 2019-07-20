@@ -14,13 +14,13 @@ class Mail(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     # Relations
-    owner = models.ForeignKey('auth.User', related_name='mails', default=0)
+    owner = models.ForeignKey('auth.User', related_name='mails',
+                              on_delete=models.CASCADE)
 
     # Functions
-    def __unicode__(self):
+    def __repr__(self):
         return _('%s %s %s') % (self.first_name, self.email_from,
-            self.email_to
-        )
+                                self.email_to)
 
     # Meta
     class Meta:

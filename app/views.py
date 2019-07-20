@@ -1,19 +1,16 @@
-import traceback
-
 import feedparser
 import twitter
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.http import JsonResponse
-from rest_framework import authentication, permissions
-from rest_framework import status
-from rest_framework.decorators import (api_view,
-                                       permission_classes, authentication_classes)
+from rest_framework import authentication, permissions, status
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       permission_classes)
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from app.serializers import MailSerializer
-from app.utils import get_summary, get_readable_date
+from app.utils import get_readable_date, get_summary
 
 
 @api_view(['GET'])
@@ -41,7 +38,6 @@ def send_mail(request, format=None):
 
     if serializer.is_valid():
         try:
-            print request.parsers
             # create data for mail
             subject = settings.EMAIL_SUBJECT % (request.data['first_name'],
                                                 request.data['last_name'])
@@ -60,8 +56,7 @@ def send_mail(request, format=None):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         except Exception:
-            print "Exception"
-            print traceback.format_exc()
+            pass
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -70,7 +65,7 @@ def send_mail(request, format=None):
 @permission_classes((permissions.AllowAny,))
 def get_tweets(request, format=None):
     """
-    To get the lastest tweets from admin profile
+    To get the latest tweets from admin profile
     """
     count = None
     if 'count' in request.query_params:
@@ -119,7 +114,7 @@ def get_blogs(request, format=None):
     return Response(data, status=status.HTTP_200_OK)
 
 
-def error404(request):
+def error404(request, exception):
     """
     Custom 404 Json Reponse
     """

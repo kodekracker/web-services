@@ -1,8 +1,9 @@
-from rest_framework.views import exception_handler
-from rest_framework.response import Response
-from rest_framework import status
-from bs4 import BeautifulSoup
 from datetime import datetime
+
+from bs4 import BeautifulSoup
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import exception_handler
 
 
 def custom_exception_handler(exc, context):
@@ -20,8 +21,8 @@ def custom_exception_handler(exc, context):
 
     if response is None:
         data = {
-        'status_code':500,
-        'error' : 'Service temporarily unavailable, try again later.'
+            'status_code': 500,
+            'error': 'Service temporarily unavailable, try again later.'
         }
         return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
