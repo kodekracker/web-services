@@ -3,8 +3,6 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-import dj_database_url
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -170,6 +168,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # import local settings, if any
 try:
-    from local_settings import *
-except ImportError as e:
+    from local_settings import *  # noqa: F401,F403
+except ImportError as e:  # noqa: F841
     pass

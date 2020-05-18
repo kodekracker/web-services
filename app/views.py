@@ -95,7 +95,7 @@ def get_blogs(request, format=None):
     """
     # get raw parsed data of RSS feed
     raw_data = feedparser.parse(settings.RSS_FEED_URL)
-    feed = raw_data['feed']
+    # feed = raw_data['feed']
 
     # append each blog entry to result data
     data = []

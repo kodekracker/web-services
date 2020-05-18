@@ -1,0 +1,16 @@
+[flake8]
+ignore = 
+    D203,
+    W504,
+    W601
+exclude =
+    .git,
+    .vscode,
+    .venv,
+    __pycache__,
+    static,
+    build,
+    dist,
+    migrations
+max-complexity = 10
+max-line-length = 119
