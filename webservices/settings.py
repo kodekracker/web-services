@@ -144,7 +144,7 @@ EMAIL_HOST_PASSWORD = os.getenv('MAILGUN_SMTP_PASSWORD', None)
 
 EMAIL_PORT = 587
 
-EMAIL_SUBJECT = 'Contact Us - " %s %s " Message from akshayon.net'
+EMAIL_SUBJECT = '[akshayon.net] Contact Us - Message from {first_name} {last_name}'
 
 EMAIL_TO = 'admin@akshayon.net'
 
