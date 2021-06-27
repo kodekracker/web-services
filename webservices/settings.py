@@ -138,7 +138,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST = 'smtp.mailgun.org'
 
-EMAIL_HOST_USER = 'django@akshayon.net'
+EMAIL_HOST_USER = os.getenv('MAILGUN_SMTP_USER', None)
 
 EMAIL_HOST_PASSWORD = os.getenv('MAILGUN_SMTP_PASSWORD', None)
 
