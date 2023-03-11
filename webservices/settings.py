@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'ajdo2vda-asd323i120sj130wu12-jws')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['.herokuapp.com', '.akshayon.net']
+ALLOWED_HOSTS = ['.up.railway.app', '.akshayon.net']
 
 # Application definition
 
